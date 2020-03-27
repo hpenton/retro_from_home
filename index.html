@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Socket.IO chat</title>
+    <title>Retro From Home</title>
     <style>
       @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway&display=swap");
       * {
@@ -21,6 +21,15 @@
         font-size: 15px;
 
         padding: 10px;
+      }
+      .zero {
+        color: green;
+      }
+      .one {
+        color: orange;
+      }
+      .two {
+        color: red;
       }
       #sub {
         background: #000;
@@ -47,6 +56,7 @@
         flex-wrap: wrap;
         justify-content: space-between;
       }
+
       #messages li {
         padding: 5px 10px;
         width: 300px;
@@ -77,6 +87,9 @@
     <script>
       $(function() {
         var socket = io();
+        dot = a => {
+          socket.emit("dot", a);
+        };
         $("#sub").submit(function() {
           socket.emit("chat message", $("#m").val());
           $("#m").val("");
@@ -92,7 +105,11 @@
         socket.on("chat message", function(messages) {
           $("#messages").empty();
           messages.forEach(element => {
-            $("#messages").append($("<li>").text(element));
+            $("#messages").append(
+              $(
+                `<li onclick="dot('${element.name}')">`
+              ).text(`${element.message} ->  Dots:${element.dots}`)
+            );
           });
 
           window.scrollTo(0, document.body.scrollHeight);
